@@ -42,6 +42,7 @@ import (
 // WrapTxToTypedData is an ultimate method that wraps Amino-encoded Cosmos Tx JSON data
 // into an EIP712-compatible TypedData request.
 func WrapTxToTypedData(
+	ctx sdk.Context,
 	cdc codectypes.AnyUnpacker,
 	chainID uint64,
 	msg sdk.Msg,
@@ -55,11 +56,11 @@ func WrapTxToTypedData(
 	}
 
 	domain := apitypes.TypedDataDomain{
-		Name:              "Cosmos Web3",
+		Name:              "Carbon",
 		Version:           "1.0.0",
 		ChainId:           math.NewHexOrDecimal256(int64(chainID)),
-		VerifyingContract: "cosmos",
-		Salt:              "0",
+		VerifyingContract: ctx.ChainID(),
+		Salt:              "1",
 	}
 
 	msgTypes, err := extractMsgTypes(cdc, "MsgValue", msg)
