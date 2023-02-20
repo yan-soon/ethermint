@@ -198,4 +198,6 @@ replace (
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
 	// use cosmos flavored protobufs
 	github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
+	//github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.45.10-0.20230117032441-98aa6b9e8923
+	//github.com/cosmos/iavl => github.com/Switcheo/iavl v0.19.4-0.20221201205217-595bd9406da2
 )
