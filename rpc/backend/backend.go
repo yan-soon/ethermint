@@ -17,6 +17,7 @@ package backend
 
 import (
 	"context"
+	"github.com/evmos/ethermint/x/evm/keeper"
 	"math/big"
 	"time"
 
@@ -164,7 +165,7 @@ func NewBackend(
 	allowUnprotectedTxs bool,
 	indexer ethermint.EVMTxIndexer,
 ) *Backend {
-	chainID, err := ethermint.ParseChainID(clientCtx.ChainID)
+	chainID, err := ethermint.ParseChainID(keeper.EvmChainId)
 	if err != nil {
 		panic(err)
 	}
