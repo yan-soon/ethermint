@@ -37,7 +37,7 @@ func InitGenesis(
 	accountKeeper types.AccountKeeper,
 	data types.GenesisState,
 ) []abci.ValidatorUpdate {
-	k.WithChainID(ctx)
+	k.WithChainID()
 
 	err := k.SetParams(ctx, data.Params)
 	if err != nil {
