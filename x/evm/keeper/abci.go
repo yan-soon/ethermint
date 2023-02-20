@@ -24,7 +24,7 @@ import (
 )
 
 // BeginBlock sets the sdk Context and EIP155 chain id to the Keeper.
-func (k *Keeper) BeginBlock(ctx sdk.Context, req abci.RequestBeginBlock) {
+func (k *Keeper) BeginBlock() {
 	k.WithChainID()
 }
 
