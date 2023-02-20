@@ -36,6 +36,10 @@ var (
 	AminoCdc = codec.NewAminoCodec(amino)
 )
 
+type (
+	ExtensionOptionsEthereumTxI interface{}
+)
+
 const (
 	// Amino names
 	updateParamsName = "ethermint/MsgUpdateParams"
@@ -104,4 +108,11 @@ func UnpackTxData(any *codectypes.Any) (TxData, error) {
 // RegisterLegacyAminoCodec required for EIP-712
 func RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgUpdateParams{}, updateParamsName, nil)
+	cdc.RegisterConcrete(&MsgEthereumTx{}, "evm/v1/MsgEthereumTx", nil)
+	cdc.RegisterConcrete(&ExtensionOptionsEthereumTx{}, "evm/v1/ExtensionOptionsEthereumTx", nil)
+	cdc.RegisterConcrete(&DynamicFeeTx{}, "evm/v1/DynamicFeeTx", nil)
+	cdc.RegisterConcrete(&AccessListTx{}, "evm/v1/AccessListTx", nil)
+	cdc.RegisterConcrete(&LegacyTx{}, "evm/v1/LegacyTx", nil)
+	cdc.RegisterInterface((*ExtensionOptionsEthereumTxI)(nil), nil)
+	cdc.RegisterInterface((*TxData)(nil), nil)
 }
