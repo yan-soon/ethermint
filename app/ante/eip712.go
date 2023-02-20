@@ -31,6 +31,7 @@ import (
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	ibcante "github.com/cosmos/ibc-go/v6/modules/core/ante"
 	"github.com/evmos/ethermint/x/evm/keeper"
+	evmtypes "github.com/evmos/ethermint/x/evm/types"
 
 	ethcrypto "github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/crypto/secp256k1"
@@ -82,13 +83,13 @@ func NewLegacyCosmosAnteHandlerEip712(options HandlerOptions) sdk.AnteHandler {
 // 1. pubKey type to change to eth type(ethsecp256k1) should there be an eth signature + cosmos signer msg
 // 2. To allow eth signature + cosmos signer to pass the feepayer check
 type LegacyEip712SigVerificationDecorator struct {
-	ak              AccountKeeper
+	ak              evmtypes.AccountKeeper
 	signModeHandler authsigning.SignModeHandler
 }
 
 // Deprecated: NewLegacyEip712SigVerificationDecorator creates a new LegacyEip712SigVerificationDecorator
 func NewLegacyEip712SigVerificationDecorator(
-	ak AccountKeeper,
+	ak evmtypes.AccountKeeper,
 	signModeHandler authsigning.SignModeHandler,
 ) LegacyEip712SigVerificationDecorator {
 	return LegacyEip712SigVerificationDecorator{

@@ -16,7 +16,6 @@
 package ante
 
 import (
-	"github.com/cosmos/cosmos-sdk/x/auth/types"
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -62,11 +61,4 @@ type FeeMarketKeeper interface {
 	GetParams(ctx sdk.Context) (params feemarkettypes.Params)
 	AddTransientGasWanted(ctx sdk.Context, gasWanted uint64) (uint64, error)
 	GetBaseFeeEnabled(ctx sdk.Context) bool
-}
-type AccountKeeper interface {
-	GetParams(ctx sdk.Context) (params types.Params)
-	GetAccount(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
-	SetAccount(ctx sdk.Context, acc types.AccountI)
-	GetModuleAddress(moduleName string) sdk.AccAddress
-	NewAccountWithAddress(ctx sdk.Context, addr sdk.AccAddress) types.AccountI
 }
