@@ -18,6 +18,7 @@ package net
 import (
 	"context"
 	"fmt"
+	"github.com/evmos/ethermint/x/evm/keeper"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	ethermint "github.com/evmos/ethermint/types"
@@ -33,7 +34,7 @@ type PublicAPI struct {
 // NewPublicAPI creates an instance of the public Net Web3 API.
 func NewPublicAPI(clientCtx client.Context) *PublicAPI {
 	// parse the chainID from a integer string
-	chainIDEpoch, err := ethermint.ParseChainID(clientCtx.ChainID)
+	chainIDEpoch, err := ethermint.ParseChainID(keeper.EvmChainId)
 	if err != nil {
 		panic(err)
 	}

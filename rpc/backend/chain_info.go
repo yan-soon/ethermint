@@ -17,6 +17,7 @@ package backend
 
 import (
 	"fmt"
+	"github.com/evmos/ethermint/x/evm/keeper"
 	"math/big"
 	"strconv"
 
@@ -34,7 +35,7 @@ import (
 
 // ChainID is the EIP-155 replay-protection chain id for the current ethereum chain config.
 func (b *Backend) ChainID() (*hexutil.Big, error) {
-	eip155ChainID, err := ethermint.ParseChainID(b.clientCtx.ChainID)
+	eip155ChainID, err := ethermint.ParseChainID(keeper.EvmChainId)
 	if err != nil {
 		panic(err)
 	}
