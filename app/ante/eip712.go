@@ -275,7 +275,7 @@ func VerifySignature(
 			FeePayer: feePayer,
 		}
 
-		typedData, err := eip712.WrapTxToTypedData(ctx, ethermintCodec, extOpt.TypedDataChainID, msgs[0], txBytes, feeDelegation)
+		typedData, err := eip712.WrapTxToTypedData(ethermintCodec, extOpt.TypedDataChainID, msgs[0], txBytes, feeDelegation)
 		if err != nil {
 			return errorsmod.Wrap(err, "failed to create EIP-712 typed data from tx")
 		}
