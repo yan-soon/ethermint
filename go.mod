@@ -193,8 +193,9 @@ require (
 replace (
 	// use cosmos keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
-	github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.46.8-0.20230220075710-745ece3b8a69
-	github.com/cosmos/iavl => github.com/Switcheo/iavl v0.19.4-0.20221201205217-595bd9406da2
+	github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.46.9-0.20230220075710-745ece3b8a69
+	github.com/cosmos/iavl => github.com/Switcheo/iavl v0.19.5-0.20230202105155-b8581baed5b7
+
 	// Fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
 	github.com/gin-gonic/gin => github.com/gin-gonic/gin v1.7.0
