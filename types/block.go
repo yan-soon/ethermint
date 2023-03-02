@@ -15,7 +15,10 @@
 // along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+	"math"
+)
 
 // BlockGasLimit returns the max gas (limit) defined in the block gas meter. If the meter is not
 // set, it returns the max gas from the application consensus params.
@@ -35,6 +38,9 @@ func BlockGasLimit(ctx sdk.Context) uint64 {
 	}
 
 	maxGas := cp.Block.MaxGas
+	if maxGas == -1 {
+		return math.MaxUint64
+	}
 	if maxGas > 0 {
 		return uint64(maxGas)
 	}
