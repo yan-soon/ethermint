@@ -708,7 +708,7 @@ func (suite *AnteTestSuite) CreateTestSingleSignedTx(privKey cryptotypes.PrivKey
 	txBuilder := suite.createBaseTxBuilder(msg, gas)
 
 	// Prepare signature field
-	sig := signing.SingleSignatureData{}
+	sig := signing.SingleSignatureData{SignMode: signMode}
 	txBuilder.SetSignatures(signing.SignatureV2{
 		PubKey: pubKey,
 		Data:   &sig,
