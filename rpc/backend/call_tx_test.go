@@ -3,6 +3,7 @@ package backend
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/evmos/ethermint/x/feemarket/types"
 	"math/big"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -434,8 +435,7 @@ func (suite *BackendTestSuite) TestDoCall() {
 }
 
 func (suite *BackendTestSuite) TestGasPrice() {
-	defaultGasPrice := (*hexutil.Big)(big.NewInt(1))
-
+	defaultGasPrice := (*hexutil.Big)(types.DefaultMinGasPrice.TruncateInt().BigInt())
 	testCases := []struct {
 		name         string
 		registerMock func()
@@ -443,6 +443,7 @@ func (suite *BackendTestSuite) TestGasPrice() {
 		expPass      bool
 	}{
 		{
+			//test modified because carbon minGasPrice is set as 5*10^13
 			"pass - get the default gas price",
 			func() {
 				var header metadata.MD

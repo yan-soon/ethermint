@@ -27,6 +27,10 @@ type MockKeeper struct {
 	codes    map[common.Hash][]byte
 }
 
+func (k MockKeeper) GetCorrespondingCosmosAddressIfExists(ctx sdk.Context, addr common.Address) sdk.AccAddress {
+	return nil
+}
+
 func NewMockKeeper() *MockKeeper {
 	return &MockKeeper{
 		accounts: make(map[common.Address]MockAcount),
