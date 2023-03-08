@@ -391,7 +391,7 @@ format-fix:
 .PHONY: format
 
 update-mock:
-	./scripts/update_mock.sh
+	bash ./scripts/update_mock.sh
 
 ###############################################################################
 ###                                Protobuf                                 ###
