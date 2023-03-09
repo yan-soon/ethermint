@@ -33,7 +33,7 @@ var (
 	DefaultEnableHeight = int64(0)
 	// DefaultNoBaseFee is false
 	DefaultNoBaseFee        = false
-	DefaultGasLimitPerBlock = sdk.NewInt(500_000_000)
+	DefaultGasLimitPerBlock = sdk.NewInt(1_000_000_000)
 	DefaultInitialBaseFee   = sdk.NewInt(50_000_000_000_000)
 	// DefaultMaxBaseFee = 5 * 10^19
 	DefaultMaxBaseFee = sdk.NewIntFromBigInt(new(big.Int).Mul(new(big.Int).Exp(big.NewInt(10), big.NewInt(19), nil), big.NewInt(5)))

@@ -96,7 +96,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 
 			// Set parent block gas
 			suite.app.FeeMarketKeeper.SetBlockGasWanted(suite.ctx, tc.parentBlockGasWanted)
-			// Comment out consensus test as carbon introduces a GasLimitPerBlock param instead
+			// Commented out because carbon introduces a GasLimitPerBlock param instead
 			// Set next block target/gasLimit through Consensus Param MaxGas
 			//blockParams := abci.BlockParams{
 			//	MaxGas:   100,

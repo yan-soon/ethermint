@@ -37,7 +37,6 @@ func BlockGasLimit(ctx sdk.Context) uint64 {
 	}
 
 	maxGas := cp.Block.MaxGas
-
 	if maxGas > 0 {
 		return uint64(maxGas)
 	}
