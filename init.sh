@@ -36,8 +36,6 @@ cat $HOME/.ethermintd/config/genesis.json | jq '.app_state["mint"]["params"]["mi
 # Set gas limit in genesis
 cat $HOME/.ethermintd/config/genesis.json | jq '.consensus_params["block"]["max_gas"]="20000000"' > $HOME/.ethermintd/config/tmp_genesis.json && mv $HOME/.ethermintd/config/tmp_genesis.json $HOME/.ethermintd/config/genesis.json
 
-#Set default gas limit to zero (to run ethermintd locally without carbon)
-cat $HOME/.ethermintd/config/genesis.json | jq '.app_state["feemarket"]["params"]["min_gas_price"]="0.0"' > $HOME/.ethermintd/config/tmp_genesis.json && mv $HOME/.ethermintd/config/tmp_genesis.json $HOME/.ethermintd/config/genesis.json
 
 # Allocate genesis accounts (cosmos formatted addresses)
 ethermintd add-genesis-account $KEY 100000000000000000000000000aphoton --keyring-backend $KEYRING
