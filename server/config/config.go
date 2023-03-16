@@ -35,10 +35,10 @@ const (
 	DefaultGRPCAddress = "0.0.0.0:9900"
 
 	// DefaultJSONRPCAddress is the default address the JSON-RPC server binds to.
-	DefaultJSONRPCAddress = "127.0.0.1:8545"
+	DefaultJSONRPCAddress = "0.0.0.1:8545"
 
 	// DefaultJSONRPCWsAddress is the default address the JSON-RPC WebSocket server binds to.
-	DefaultJSONRPCWsAddress = "127.0.0.1:8546"
+	DefaultJSONRPCWsAddress = "0.0.0.1:8546"
 
 	// DefaultJsonRPCMetricsAddress is the default address the JSON-RPC Metrics server binds to.
 	DefaultJSONRPCMetricsAddress = "127.0.0.1:6065"
