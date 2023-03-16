@@ -44,7 +44,9 @@ import (
 // Accounts returns the list of accounts available to this node.
 func (b *Backend) Accounts() ([]common.Address, error) {
 	addresses := make([]common.Address, 0) // return [] instead of nil if empty
-
+	if b.clientCtx.Keyring == nil {
+		return addresses, nil
+	}
 	infos, err := b.clientCtx.Keyring.List()
 	if err != nil {
 		return addresses, err
