@@ -62,7 +62,7 @@ func (k *Keeper) EndBlock(ctx sdk.Context, req abci.RequestEndBlock) {
 	gasUsed := ctx.BlockGasMeter().GasConsumedToLimit()
 
 	fmt.Println("gasWanted: ", gasWanted)
-	fmt.Println("gasUsed: ", gasWanted)
+	fmt.Println("gasUsed: ", gasUsed)
 
 	// to prevent BaseFee manipulation we limit the gasWanted so that
 	// gasWanted = max(gasWanted * MinGasMultiplier, gasUsed)
