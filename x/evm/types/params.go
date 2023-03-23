@@ -21,6 +21,7 @@ import (
 
 	"github.com/ethereum/go-ethereum/params"
 
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/ethereum/go-ethereum/core/vm"
 )
 
@@ -106,7 +107,8 @@ func validateEVMDenom(i interface{}) error {
 	if !ok {
 		return fmt.Errorf("invalid parameter EVM denom type: %T", i)
 	}
-	return fmt.Errorf("evm denom should not be modified! Proposed changed denom: %s", denom)
+
+	return sdk.ValidateDenom(denom)
 }
 
 func validateBool(i interface{}) error {
