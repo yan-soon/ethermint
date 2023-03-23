@@ -15,8 +15,17 @@
 // along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
 package types
 
+var LocalEthermintRun string
+
 // DefaultGenesisState sets default fee market genesis state.
 func DefaultGenesisState() *GenesisState {
+	if LocalEthermintRun == "true" {
+		return &GenesisState{
+			Params:   DefaultEthermintTestParams(),
+			BlockGas: 0,
+		}
+	}
+
 	return &GenesisState{
 		Params:   DefaultParams(),
 		BlockGas: 0,

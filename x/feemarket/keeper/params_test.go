@@ -18,7 +18,7 @@ func (suite *KeeperTestSuite) TestSetGetParams() {
 		{
 			"success - Checks if the default params are set correctly",
 			func() interface{} {
-				return types.DefaultParams()
+				return types.DefaultEthermintTestParams()
 			},
 			func() interface{} {
 				return suite.app.FeeMarketKeeper.GetParams(suite.ctx)

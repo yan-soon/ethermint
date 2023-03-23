@@ -36,8 +36,6 @@ func (k Keeper) CalculateBaseFee(ctx sdk.Context) *big.Int {
 		return nil
 	}
 
-	consParams := ctx.ConsensusParams()
-
 	// If the current block is the first EIP-1559 block, return the base fee
 	// defined in the parameters (DefaultBaseFee if it hasn't been changed by
 	// governance).
@@ -56,12 +54,11 @@ func (k Keeper) CalculateBaseFee(ctx sdk.Context) *big.Int {
 
 	parentGasUsed := k.GetBlockGasWanted(ctx)
 
-	gasLimit := new(big.Int).SetUint64(math.MaxUint64)
-
-	// NOTE: a MaxGas equal to -1 means that block gas is unlimited
-	if consParams != nil && consParams.Block.MaxGas > -1 {
-		gasLimit = big.NewInt(consParams.Block.MaxGas)
-	}
+	// Using custom param defined in feemarket to calculate the gas target
+	// Note: This is not the true gas limit for each block, true gas limit amount is set as "-1"
+	// ie Uint64.Max in consensus config
+	// Used to check how congested network is & calculation of base fee for EVM only.
+	gasLimit := params.GasLimitPerBlock.BigInt()
 
 	// CONTRACT: ElasticityMultiplier cannot be 0 as it's checked in the params
 	// validation
@@ -90,7 +87,8 @@ func (k Keeper) CalculateBaseFee(ctx sdk.Context) *big.Int {
 			common.Big1,
 		)
 
-		return x.Add(parentBaseFee, baseFeeDelta)
+		//Takes into account maxBaseFeeParam
+		return math.BigMin(x.Add(parentBaseFee, baseFeeDelta), params.MaxBaseFee.BigInt())
 	}
 
 	// Otherwise if the parent block used less gas than its target, the baseFee

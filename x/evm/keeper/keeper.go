@@ -37,6 +37,8 @@ import (
 	evm "github.com/evmos/ethermint/x/evm/vm"
 )
 
+var EvmChainId string
+
 // Keeper grants access to the EVM module state and implements the go-ethereum StateDB interface.
 type Keeper struct {
 	// Protobuf codec
@@ -127,8 +129,8 @@ func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 }
 
 // WithChainID sets the chain id to the local variable in the keeper
-func (k *Keeper) WithChainID(ctx sdk.Context) {
-	chainID, err := ethermint.ParseChainID(ctx.ChainID())
+func (k *Keeper) WithChainID() {
+	chainID, err := ethermint.ParseChainID(EvmChainId)
 	if err != nil {
 		panic(err)
 	}

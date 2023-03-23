@@ -58,10 +58,15 @@ whitespace :=
 whitespace += $(whitespace)
 comma := ,
 build_tags_comma_sep := $(subst $(whitespace),$(comma),$(build_tags))
+PROJECT_DIR=github.com/evmos/ethermint
 
 # process linker flags
 
 ldflags = -X github.com/cosmos/cosmos-sdk/version.Name=ethermint \
+		  -X '${PROJECT_DIR}/x/evm/keeper.EvmChainId=ethermint_9000-1' \
+		  -X '${PROJECT_DIR}/x/evm/types.DefaultEVMDenom=aphoton' \
+		  -X '${PROJECT_DIR}/x/feemarket/types.LocalEthermintRun=true' \
+		  -X '${PROJECT_DIR}/x/evm/keeper.EnableEvmDenomChange=true' \
 		  -X github.com/cosmos/cosmos-sdk/version.AppName=$(ETHERMINT_BINARY) \
 		  -X github.com/cosmos/cosmos-sdk/version.Version=$(VERSION) \
 		  -X github.com/cosmos/cosmos-sdk/version.Commit=$(COMMIT) \
@@ -314,7 +319,7 @@ TEST_TARGETS := test-unit test-unit-cover test-race
 # Test runs-specific rules. To add a new test target, just add
 # a new rule, customise ARGS or TEST_PACKAGES ad libitum, and
 # append the new rule to the TEST_TARGETS list.
-test-unit: ARGS=-timeout=10m -race
+test-unit: ARGS=-timeout=10m -race -ldflags "$(ldflags)"
 test-unit: TEST_PACKAGES=$(PACKAGES_UNIT)
 
 test-race: ARGS=-race
@@ -323,6 +328,10 @@ $(TEST_TARGETS): run-tests
 
 test-unit-cover: ARGS=-timeout=10m -race -coverprofile=coverage.txt -covermode=atomic
 test-unit-cover: TEST_PACKAGES=$(PACKAGES_UNIT)
+
+test-path: go.sum
+		GO111MODULE=on go install -mod=readonly -ldflags "$(ldflags)" ./cmd/ethermintd
+		@go test -ldflags "$(ldflags)" $(TESTPATH)
 
 run-tests:
 ifneq (,$(shell which tparse 2>/dev/null))
@@ -381,6 +390,9 @@ format-fix:
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs gofumpt -w -s
 	find . -name '*.go' -type f -not -path "./vendor*" -not -path "*.git*" -not -path "./client/docs/statik/statik.go" -not -name '*.pb.go' -not -name '*.pb.gw.go' | xargs misspell -w
 .PHONY: format
+
+update-mock:
+	bash ./scripts/update_mock.sh
 
 ###############################################################################
 ###                                Protobuf                                 ###

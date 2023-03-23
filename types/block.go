@@ -15,7 +15,9 @@
 // along with the Ethermint library. If not, see https://github.com/evmos/ethermint/blob/main/LICENSE
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import (
+	sdk "github.com/cosmos/cosmos-sdk/types"
+)
 
 // BlockGasLimit returns the max gas (limit) defined in the block gas meter. If the meter is not
 // set, it returns the max gas from the application consensus params.

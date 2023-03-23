@@ -20,6 +20,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/evmos/ethermint/x/evm/keeper"
 	"math/big"
 
 	errorsmod "cosmossdk.io/errors"
@@ -51,7 +52,7 @@ func (b *Backend) Resend(args evmtypes.TransactionArgs, gasPrice *hexutil.Big, g
 
 	// The signer used should always be the 'latest' known one because we expect
 	// signers to be backwards-compatible with old transactions.
-	eip155ChainID, err := ethermint.ParseChainID(b.clientCtx.ChainID)
+	eip155ChainID, err := ethermint.ParseChainID(keeper.EvmChainId)
 	if err != nil {
 		return common.Hash{}, err
 	}

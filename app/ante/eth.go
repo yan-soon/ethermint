@@ -133,7 +133,7 @@ func NewEthGasConsumeDecorator(
 // - user doesn't have enough balance to deduct the transaction fees (gas_limit * gas_price)
 // - transaction or block gas meter runs out of gas
 // - sets the gas meter limit
-// - gas limit is greater than the block gas meter limit
+// - gas limit is greater than the block gas meter limit (only when blockgasLimit > 0 )
 func (egcd EthGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simulate bool, next sdk.AnteHandler) (sdk.Context, error) {
 	gasWanted := uint64(0)
 	// gas consumption limit already checked during CheckTx so there's no need to
@@ -217,9 +217,9 @@ func (egcd EthGasConsumeDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simula
 	// return error if the tx gas is greater than the block limit (max gas)
 
 	// NOTE: it's important here to use the gas wanted instead of the gas consumed
-	// from the tx gas pool. The later only has the value so far since the
+	// from the tx gas pool. The latter only has the value so far since the
 	// EthSetupContextDecorator so it will never exceed the block gas limit.
-	if gasWanted > blockGasLimit {
+	if blockGasLimit > 0 && gasWanted > blockGasLimit {
 		return ctx, errorsmod.Wrapf(
 			errortypes.ErrOutOfGas,
 			"tx gas (%d) exceeds block gas limit (%d)",

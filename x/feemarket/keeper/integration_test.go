@@ -1,5 +1,7 @@
 package keeper_test
 
+//moved to carbon as fee_market_integration_test.go
+
 import (
 	"encoding/json"
 	"math/big"
