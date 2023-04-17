@@ -42,6 +42,7 @@ func (k Keeper) SetParams(ctx sdk.Context, params types.Params) error {
 	if EnableEvmDenomChange != "true" && (params.EvmDenom != types.DefaultEVMDenom) {
 		return fmt.Errorf("evmParam is not allowed to be changed to %s. EnableEvmDenomChange flag: %s", params.EvmDenom, EnableEvmDenomChange)
 	}
+
 	store := ctx.KVStore(k.storeKey)
 	bz, err := k.cdc.Marshal(&params)
 	if err != nil {
