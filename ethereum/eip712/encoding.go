@@ -50,15 +50,15 @@ func SetEncodingConfig(cfg params.EncodingConfig) {
 func GetEIP712BytesForMsg(signDocBytes []byte) ([]byte, error) {
 	typedData, err := GetEIP712TypedDataForMsg(signDocBytes)
 	if err != nil {
-		return nil, err, typedData
+		return nil, err
 	}
 
 	_, rawData, err := apitypes.TypedDataAndHash(typedData)
 	if err != nil {
-		return nil, fmt.Errorf("could not get EIP-712 object bytes: %w", err), typedData
+		return nil, fmt.Errorf("could not get EIP-712 object bytes: %w", err)
 	}
 
-	return []byte(rawData), nil, typedData
+	return []byte(rawData), nil
 }
 
 // GetEIP712TypedDataForMsg returns the EIP-712 TypedData representation for either

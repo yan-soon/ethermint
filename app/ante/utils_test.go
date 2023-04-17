@@ -544,7 +544,7 @@ func (suite *AnteTestSuite) generateSingleSignature(signMode signing.SignMode, p
 	msg = signDocBytes
 
 	if signType == "EIP-712" {
-		msg, err, _ = eip712.GetEIP712BytesForMsg(signDocBytes)
+		msg, err = eip712.GetEIP712BytesForMsg(signDocBytes)
 		suite.Require().NoError(err)
 	}
 

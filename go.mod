@@ -27,6 +27,7 @@ require (
 	github.com/pkg/errors v0.9.1
 	github.com/rakyll/statik v0.1.7
 	github.com/rs/cors v1.8.3
+	github.com/sirupsen/logrus v1.9.0
 	github.com/spf13/cast v1.5.0
 	github.com/spf13/cobra v1.7.0
 	github.com/spf13/viper v1.15.0
@@ -199,8 +200,8 @@ require (
 replace (
 	// use cosmos keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
-		github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.46.9-0.20230220075710-745ece3b8a69
-    	github.com/cosmos/iavl => github.com/Switcheo/iavl v0.19.5-0.20230202105155-b8581baed5b7
+	github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.46.13-0.20230417100423-b613c525eea9
+	github.com/cosmos/iavl => github.com/Switcheo/iavl v0.19.5-0.20230417100210-36cd2d2d01cf
 
 	// Fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409

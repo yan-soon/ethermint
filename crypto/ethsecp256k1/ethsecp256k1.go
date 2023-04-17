@@ -19,9 +19,7 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"crypto/subtle"
-	"encoding/json"
 	"fmt"
-	"github.com/sirupsen/logrus"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -233,7 +231,7 @@ func (pubKey PubKey) VerifySignature(msg, sig []byte) bool {
 // to EIP-712 object bytes, then performing ECDSA verification on the hash. This is to support
 // signing a Cosmos payload using EIP-712.
 func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
-	eip712Bytes, err, typedData := eip712.GetEIP712BytesForMsg(msg)
+	eip712Bytes, err := eip712.GetEIP712BytesForMsg(msg)
 	if err != nil {
 		return false
 	}
