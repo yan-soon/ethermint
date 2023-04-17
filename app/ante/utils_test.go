@@ -56,6 +56,7 @@ import (
 	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
 )
 
+// moved to carbon repo as utils_test.go
 type AnteTestSuite struct {
 	suite.Suite
 
