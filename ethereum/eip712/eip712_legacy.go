@@ -59,11 +59,11 @@ func LegacyWrapTxToTypedData(
 	}
 
 	domain := apitypes.TypedDataDomain{
-		Name:              "Cosmos Web3",
+		Name:              "Carbon",
 		Version:           "1.0.0",
 		ChainId:           math.NewHexOrDecimal256(int64(chainID)),
 		VerifyingContract: "cosmos",
-		Salt:              "0",
+		Salt:              "1",
 	}
 
 	msgTypes, err := extractMsgTypes(cdc, "MsgValue", msg)
