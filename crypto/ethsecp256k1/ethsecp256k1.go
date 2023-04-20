@@ -19,7 +19,9 @@ import (
 	"bytes"
 	"crypto/ecdsa"
 	"crypto/subtle"
+	"encoding/json"
 	"fmt"
+	"github.com/sirupsen/logrus"
 
 	errorsmod "cosmossdk.io/errors"
 	"github.com/cosmos/cosmos-sdk/codec"
@@ -231,7 +233,7 @@ func (pubKey PubKey) VerifySignature(msg, sig []byte) bool {
 // to EIP-712 object bytes, then performing ECDSA verification on the hash. This is to support
 // signing a Cosmos payload using EIP-712.
 func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
-	eip712Bytes, err := eip712.GetEIP712BytesForMsg(msg)
+	eip712Bytes, typedData, err := eip712.GetEIP712BytesForMsg(msg)
 	if err != nil {
 		return false
 	}
@@ -239,14 +241,22 @@ func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
 	if pubKey.verifySignatureECDSA(eip712Bytes, sig) {
 		return true
 	}
+	typedDataJson, _ := json.Marshal(typedData)
 
 	// Try verifying the signature using the legacy EIP-712 encoding
-	legacyEIP712Bytes, err := eip712.LegacyGetEIP712BytesForMsg(msg)
+	legacyEIP712Bytes, typedDataLegacy, err := eip712.LegacyGetEIP712BytesForMsg(msg)
 	if err != nil {
+		logrus.Errorf("Unable to verify EIP-712 Signature: \ntypedData: %s \n", typedDataJson)
 		return false
 	}
 
-	return pubKey.verifySignatureECDSA(legacyEIP712Bytes, sig)
+	if pubKey.verifySignatureECDSA(legacyEIP712Bytes, sig) {
+		return true
+	}
+	typedDataLegacyJson, _ := json.Marshal(typedDataLegacy)
+	logrus.Errorf("Unable to verify EIP-712 Signature: \nlegacyTypedData: %s \ntypedData: %s \n", typedDataLegacyJson, typedDataJson)
+	return false
+
 }
 
 // Perform standard ECDSA signature verification for the given raw bytes and signature.

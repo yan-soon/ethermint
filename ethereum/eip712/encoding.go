@@ -47,18 +47,18 @@ func SetEncodingConfig(cfg params.EncodingConfig) {
 
 // GetEIP712BytesForMsg returns the EIP-712 object bytes for the given SignDoc bytes by decoding the bytes into
 // an EIP-712 object, then converting via WrapTxToTypedData. See https://eips.ethereum.org/EIPS/eip-712 for more.
-func GetEIP712BytesForMsg(signDocBytes []byte) ([]byte, error) {
+func GetEIP712BytesForMsg(signDocBytes []byte) ([]byte, apitypes.TypedData, error) {
 	typedData, err := GetEIP712TypedDataForMsg(signDocBytes)
 	if err != nil {
-		return nil, err
+		return nil, typedData, err
 	}
 
 	_, rawData, err := apitypes.TypedDataAndHash(typedData)
 	if err != nil {
-		return nil, fmt.Errorf("could not get EIP-712 object bytes: %w", err)
+		return nil, typedData, fmt.Errorf("could not get EIP-712 object bytes: %w", err)
 	}
 
-	return []byte(rawData), nil
+	return []byte(rawData), typedData, nil
 }
 
 // GetEIP712TypedDataForMsg returns the EIP-712 TypedData representation for either

@@ -388,10 +388,10 @@ func (suite *EIP712TestSuite) TestEIP712() {
 
 // verifyEIP712SignatureVerification verifies that the payload passes signature verification if signed as its EIP-712 representation.
 func (suite *EIP712TestSuite) verifyEIP712SignatureVerification(expectedSuccess bool, privKey ethsecp256k1.PrivKey, pubKey ethsecp256k1.PubKey, signBytes []byte) {
-	eip712Bytes, err := eip712.GetEIP712BytesForMsg(signBytes)
+	eip712Bytes, _, err := eip712.GetEIP712BytesForMsg(signBytes)
 
 	if suite.useLegacyEIP712TypedData {
-		eip712Bytes, err = eip712.LegacyGetEIP712BytesForMsg(signBytes)
+		eip712Bytes, _, err = eip712.LegacyGetEIP712BytesForMsg(signBytes)
 	}
 
 	if !expectedSuccess {
