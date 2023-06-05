@@ -18,7 +18,6 @@ package server
 import (
 	"net"
 	"net/http"
-	"time"
 
 	"github.com/evmos/ethermint/server/config"
 	"github.com/gorilla/mux"
@@ -74,9 +73,6 @@ func AddCommands(
 func ConnectTmWS(tmRPCAddr, tmEndpoint string, logger tmlog.Logger) *rpcclient.WSClient {
 	tmWsClient, err := rpcclient.NewWS(tmRPCAddr, tmEndpoint,
 		rpcclient.MaxReconnectAttempts(256),
-		rpcclient.ReadWait(120*time.Second),
-		rpcclient.WriteWait(120*time.Second),
-		rpcclient.PingPeriod(50*time.Second),
 		rpcclient.OnReconnect(func() {
 			logger.Debug("EVM RPC reconnects to Tendermint WS", "address", tmRPCAddr+tmEndpoint)
 		}),
