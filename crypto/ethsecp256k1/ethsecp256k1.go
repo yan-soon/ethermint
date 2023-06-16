@@ -235,18 +235,20 @@ func (pubKey PubKey) VerifySignature(msg, sig []byte) bool {
 func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
 	eip712Bytes, typedData, err := eip712.GetEIP712BytesForMsg(msg)
 	if err != nil {
+		logrus.Errorf("Error while getting typedData and eip712Bytes from msg: \ntypedData: %#+v \n", typedData)
 		return false
 	}
+	typedDataJson, _ := json.Marshal(typedData)
 
 	if pubKey.verifySignatureECDSA(eip712Bytes, sig) {
 		return true
 	}
-	typedDataJson, _ := json.Marshal(typedData)
+	logrus.Errorf("Unable to verify EIP-712 Signature: \ntypedData: %s \n", typedDataJson)
 
 	// Try verifying the signature using the legacy EIP-712 encoding
 	legacyEIP712Bytes, typedDataLegacy, err := eip712.LegacyGetEIP712BytesForMsg(msg)
 	if err != nil {
-		logrus.Errorf("Unable to verify EIP-712 Signature: \ntypedData: %s \n", typedDataJson)
+		logrus.Errorf("Error while getting typedData and eip712Bytes from msg: \ntypedDataLegacy: %#+v \n", typedDataLegacy)
 		return false
 	}
 
@@ -254,7 +256,7 @@ func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
 		return true
 	}
 	typedDataLegacyJson, _ := json.Marshal(typedDataLegacy)
-	logrus.Errorf("Unable to verify EIP-712 Signature: \nlegacyTypedData: %s \ntypedData: %s \n", typedDataLegacyJson, typedDataJson)
+	logrus.Errorf("Unable to verify EIP-712 Signature: \nlegacyTypedData: %s \ntypedDataLegacy: %s \n", typedDataLegacyJson, typedDataJson)
 	return false
 
 }
