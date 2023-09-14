@@ -19,7 +19,7 @@ import (
 	"fmt"
 	"math/big"
 
-	"github.com/gogo/protobuf/proto"
+	proto "github.com/cosmos/gogoproto/proto"
 
 	errorsmod "cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"

@@ -21,15 +21,16 @@ import (
 	"crypto/subtle"
 	"encoding/json"
 	"fmt"
+
 	"github.com/sirupsen/logrus"
 
 	errorsmod "cosmossdk.io/errors"
+	tmcrypto "github.com/cometbft/cometbft/crypto"
 	"github.com/cosmos/cosmos-sdk/codec"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/evmos/ethermint/ethereum/eip712"
-	tmcrypto "github.com/tendermint/tendermint/crypto"
 )
 
 const (

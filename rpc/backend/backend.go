@@ -17,10 +17,13 @@ package backend
 
 import (
 	"context"
-	"github.com/evmos/ethermint/x/evm/keeper"
 	"math/big"
 	"time"
 
+	"github.com/evmos/ethermint/x/evm/keeper"
+
+	"github.com/cometbft/cometbft/libs/log"
+	tmrpctypes "github.com/cometbft/cometbft/rpc/core/types"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
 	"github.com/cosmos/cosmos-sdk/server"
@@ -35,8 +38,6 @@ import (
 	"github.com/evmos/ethermint/server/config"
 	ethermint "github.com/evmos/ethermint/types"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
-	"github.com/tendermint/tendermint/libs/log"
-	tmrpctypes "github.com/tendermint/tendermint/rpc/core/types"
 )
 
 // BackendI implements the Cosmos and EVM backend.

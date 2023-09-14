@@ -16,9 +16,9 @@
 package encoding
 
 import (
+	simappparams "cosmossdk.io/simapp/params"
 	amino "github.com/cosmos/cosmos-sdk/codec"
 	"github.com/cosmos/cosmos-sdk/codec/types"
-	"github.com/cosmos/cosmos-sdk/simapp/params"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 
@@ -26,12 +26,12 @@ import (
 )
 
 // MakeConfig creates an EncodingConfig for testing
-func MakeConfig(mb module.BasicManager) params.EncodingConfig {
+func MakeConfig(mb module.BasicManager) simappparams.EncodingConfig {
 	cdc := amino.NewLegacyAmino()
 	interfaceRegistry := types.NewInterfaceRegistry()
 	codec := amino.NewProtoCodec(interfaceRegistry)
 
-	encodingConfig := params.EncodingConfig{
+	encodingConfig := simappparams.EncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
 		Codec:             codec,
 		TxConfig:          tx.NewTxConfig(codec, tx.DefaultSignModes),
