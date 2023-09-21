@@ -233,8 +233,8 @@ github.com/Shopify/sarama v1.19.0/go.mod h1:FVkBWblsNy7DGZRfXLU0O9RCGt5g3g3yEuWX
 github.com/Shopify/toxiproxy v2.1.4+incompatible/go.mod h1:OXgGpZ6Cli1/URJOF1DMxUHB2q5Ap20/P/eIdh4G0pI=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6 h1:fLjPD/aNc3UIOA6tDi6QXUemppXK3P9BI7mr2hd6gx8=
 github.com/StackExchange/wmi v0.0.0-20180116203802-5d049714c4a6/go.mod h1:3eOhrUMpNV+6aFIbp5/iudMxNCF27Vw2OZgy4xEx0Fg=
-github.com/Switcheo/cosmos-sdk v0.47.5-0.20230919094900-8145796562ef h1:gFMEOn1msnXVP0Yh+nvC7rfNpttdTW/TKas8yT6Tr5Q=
-github.com/Switcheo/cosmos-sdk v0.47.5-0.20230919094900-8145796562ef/go.mod h1:mOYVrbMSfxjHD1F7UsvzHJF02wJg9vmZvRYWfrbMZ+U=
+github.com/Switcheo/cosmos-sdk v0.47.5-0.20230921034857-e45118e257f9 h1:xotDXT68/C9hYAThdwpKDSmaTf4uXRP4c05N7u8r+QE=
+github.com/Switcheo/cosmos-sdk v0.47.5-0.20230921034857-e45118e257f9/go.mod h1:mOYVrbMSfxjHD1F7UsvzHJF02wJg9vmZvRYWfrbMZ+U=
 github.com/Switcheo/iavl v0.20.1-0.20230907092650-a292b5c6f6ae h1:HGJubAA6rYMgssNUf+nq+qQXLuda9YJfxPRGX8NULOI=
 github.com/Switcheo/iavl v0.20.1-0.20230907092650-a292b5c6f6ae/go.mod h1:WO7FyvaZJoH65+HFOsDir7xU9FWk2w9cHXNW1XHcl7A=
 github.com/VictoriaMetrics/fastcache v1.6.0 h1:C/3Oi3EiBCqufydp1neRZkqcwmEiuRT9c3fqvvgKm5o=
