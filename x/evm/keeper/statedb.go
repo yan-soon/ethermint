@@ -19,10 +19,10 @@ import (
 	"fmt"
 	"math/big"
 
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 
 	sdkmath "cosmossdk.io/math"
+	storetypes "cosmossdk.io/store/types"
 
 	errorsmod "cosmossdk.io/errors"
 	"cosmossdk.io/store/prefix"
@@ -73,7 +73,7 @@ func (k *Keeper) ForEachStorage(ctx sdk.Context, addr common.Address, cb func(ke
 	store := ctx.KVStore(k.storeKey)
 	prefix := types.AddressStoragePrefix(addr)
 
-	iterator := sdk.KVStorePrefixIterator(store, prefix)
+	iterator := storetypes.KVStorePrefixIterator(store, prefix)
 	defer iterator.Close()
 
 	for ; iterator.Valid(); iterator.Next() {
@@ -149,7 +149,7 @@ func (k *Keeper) SetAccount(ctx sdk.Context, addr common.Address, account stated
 				CodeHash:    codeHash.Hex(),
 			}
 		} else {
-			return sdkerrors.Wrapf(types.ErrInvalidAccount, "type %T, address %s", acct, addr)
+			return errorsmod.Wrapf(types.ErrInvalidAccount, "type %T, address %s", acct, addr)
 		}
 	}
 

@@ -16,6 +16,7 @@
 package types
 
 import (
+	"context"
 	"math/big"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
@@ -24,6 +25,7 @@ import (
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 
+	"cosmossdk.io/core/address"
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	feemarkettypes "github.com/evmos/ethermint/x/feemarket/types"
@@ -31,32 +33,34 @@ import (
 
 // AccountKeeper defines the expected account keeper interface
 type AccountKeeper interface {
-	NewAccountWithAddress(ctx sdk.Context, addr sdk.AccAddress) authtypes.AccountI
-	GetCorrespondingEthAddressIfExists(ctx sdk.Context, addr sdk.AccAddress) sdk.AccAddress
-	GetCorrespondingCosmosAddressIfExists(ctx sdk.Context, addr sdk.AccAddress) sdk.AccAddress
+	NewAccountWithAddress(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
+	GetCorrespondingEthAddressIfExists(ctx context.Context, addr sdk.AccAddress) sdk.AccAddress
+	GetCorrespondingCosmosAddressIfExists(ctx context.Context, addr sdk.AccAddress) sdk.AccAddress
 	GetModuleAddress(moduleName string) sdk.AccAddress
-	GetAllAccounts(ctx sdk.Context) (accounts []authtypes.AccountI)
-	IterateAccounts(ctx sdk.Context, cb func(account authtypes.AccountI) bool)
-	GetSequence(sdk.Context, sdk.AccAddress) (uint64, error)
-	GetAccount(ctx sdk.Context, addr sdk.AccAddress) authtypes.AccountI
-	SetAccount(ctx sdk.Context, account authtypes.AccountI)
-	RemoveAccount(ctx sdk.Context, account authtypes.AccountI)
-	GetParams(ctx sdk.Context) (params authtypes.Params)
+	GetAllAccounts(ctx context.Context) (accounts []sdk.AccountI)
+	IterateAccounts(ctx context.Context, cb func(account sdk.AccountI) bool)
+	GetSequence(context.Context, sdk.AccAddress) (uint64, error)
+	GetAccount(ctx context.Context, addr sdk.AccAddress) sdk.AccountI
+	SetAccount(ctx context.Context, account sdk.AccountI)
+	RemoveAccount(ctx context.Context, account sdk.AccountI)
+	GetParams(ctx context.Context) (params authtypes.Params)
+	// AddressCodec returns the account address codec.
+	AddressCodec() address.Codec
 }
 
 // BankKeeper defines the expected interface needed to retrieve account balances.
 type BankKeeper interface {
 	authtypes.BankKeeper
-	GetBalance(ctx sdk.Context, addr sdk.AccAddress, denom string) sdk.Coin
-	SendCoinsFromModuleToAccount(ctx sdk.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
-	MintCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
-	BurnCoins(ctx sdk.Context, moduleName string, amt sdk.Coins) error
+	GetBalance(ctx context.Context, addr sdk.AccAddress, denom string) sdk.Coin
+	SendCoinsFromModuleToAccount(ctx context.Context, senderModule string, recipientAddr sdk.AccAddress, amt sdk.Coins) error
+	MintCoins(ctx context.Context, moduleName string, amt sdk.Coins) error
+	BurnCoins(ctx context.Context, moduleName string, amt sdk.Coins) error
 }
 
 // StakingKeeper returns the historical headers kept in store.
 type StakingKeeper interface {
-	GetHistoricalInfo(ctx sdk.Context, height int64) (stakingtypes.HistoricalInfo, bool)
-	GetValidatorByConsAddr(ctx sdk.Context, consAddr sdk.ConsAddress) (validator stakingtypes.Validator, found bool)
+	GetHistoricalInfo(ctx context.Context, height int64) (stakingtypes.HistoricalInfo, bool)
+	GetValidatorByConsAddr(ctx context.Context, consAddr sdk.ConsAddress) (validator stakingtypes.Validator, found bool)
 }
 
 // FeeMarketKeeper

@@ -21,6 +21,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/cometbft/cometbft/config"
 	tmos "github.com/cometbft/cometbft/libs/os"
 	"github.com/cometbft/cometbft/node"
 	"github.com/cometbft/cometbft/p2p"
@@ -71,7 +72,7 @@ func startInProcess(cfg Config, val *Validator) error {
 		nodeKey,
 		proxy.NewLocalClientCreator(app),
 		genDocProvider,
-		node.DefaultDBProvider,
+		config.DefaultDBProvider,
 		node.DefaultMetricsProvider(tmCfg.Instrumentation),
 		logger.With("module", val.Moniker),
 	)

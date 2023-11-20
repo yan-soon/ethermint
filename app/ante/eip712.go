@@ -125,7 +125,7 @@ func (svd LegacyEip712SigVerificationDecorator) AnteHandle(ctx sdk.Context,
 		return ctx, err
 	}
 
-	signerAddrs := sigTx.GetSigners()
+	signerAddrs, err := sigTx.GetSigners()
 
 	// EIP712 allows just one signature
 	if len(sigs) != 1 {
