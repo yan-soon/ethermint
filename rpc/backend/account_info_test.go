@@ -138,11 +138,14 @@ func (suite *BackendTestSuite) TestGetProof() {
 					evmtypes.StateKey(address1, common.HexToHash("0x0").Bytes()),
 					tmrpcclient.ABCIQueryOptions{Height: iavlHeight, Prove: true},
 				)
+
+				var accountKey []byte
+				accountKey = append(authtypes.AddressStoreKeyPrefix, sdk.AccAddress(address1.Bytes())...)
 				RegisterABCIQueryWithOptions(
 					client,
 					bn.Int64(),
 					"store/acc/key",
-					authtypes.AddressStoreKey(sdk.AccAddress(address1.Bytes())),
+					accountKey,
 					tmrpcclient.ABCIQueryOptions{Height: iavlHeight, Prove: true},
 				)
 			},

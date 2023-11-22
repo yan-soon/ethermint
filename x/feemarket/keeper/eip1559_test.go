@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math/big"
 
-	sdk "github.com/cosmos/cosmos-sdk/types"
+	sdkmath "cosmossdk.io/math"
 )
 
 func (suite *KeeperTestSuite) TestCalculateBaseFee() {
@@ -13,7 +13,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 		NoBaseFee            bool
 		blockHeight          int64
 		parentBlockGasWanted uint64
-		minGasPrice          sdk.Dec
+		minGasPrice          sdkmath.LegacyDec
 		expFee               *big.Int
 	}{
 		{
@@ -21,7 +21,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			true,
 			0,
 			0,
-			sdk.ZeroDec(),
+			sdkmath.LegacyZeroDec(),
 			nil,
 		},
 		{
@@ -29,7 +29,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			0,
 			0,
-			sdk.ZeroDec(),
+			sdkmath.LegacyZeroDec(),
 			suite.app.FeeMarketKeeper.GetParams(suite.ctx).BaseFee.BigInt(),
 		},
 		{
@@ -37,7 +37,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			50,
-			sdk.ZeroDec(),
+			sdkmath.LegacyZeroDec(),
 			suite.app.FeeMarketKeeper.GetParams(suite.ctx).BaseFee.BigInt(),
 		},
 		{
@@ -45,7 +45,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			50,
-			sdk.NewDec(1500000000),
+			sdkmath.LegacyNewDec(1500000000),
 			suite.app.FeeMarketKeeper.GetParams(suite.ctx).BaseFee.BigInt(),
 		},
 		{
@@ -53,7 +53,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			100,
-			sdk.ZeroDec(),
+			sdkmath.LegacyZeroDec(),
 			big.NewInt(1125000000),
 		},
 		{
@@ -61,7 +61,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			100,
-			sdk.NewDec(1500000000),
+			sdkmath.LegacyNewDec(1500000000),
 			big.NewInt(1125000000),
 		},
 		{
@@ -69,7 +69,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			25,
-			sdk.ZeroDec(),
+			sdkmath.LegacyZeroDec(),
 			big.NewInt(937500000),
 		},
 		{
@@ -77,7 +77,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			false,
 			1,
 			25,
-			sdk.NewDec(1500000000),
+			sdkmath.LegacyNewDec(1500000000),
 			big.NewInt(1500000000),
 		},
 	}
@@ -88,7 +88,7 @@ func (suite *KeeperTestSuite) TestCalculateBaseFee() {
 			params := suite.app.FeeMarketKeeper.GetParams(suite.ctx)
 			params.NoBaseFee = tc.NoBaseFee
 			params.MinGasPrice = tc.minGasPrice
-			params.GasLimitPerBlock = sdk.NewInt(100)
+			params.GasLimitPerBlock = sdkmath.NewInt(100)
 			suite.app.FeeMarketKeeper.SetParams(suite.ctx, params)
 
 			// Set block height

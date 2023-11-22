@@ -4,9 +4,9 @@ import (
 	"math/big"
 	"testing"
 
-	"cosmossdk.io/log"
 	simappparams "cosmossdk.io/simapp/params"
 	abci "github.com/cometbft/cometbft/abci/types"
+	"github.com/cometbft/cometbft/libs/log"
 	tmtypes "github.com/cometbft/cometbft/types"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/cosmos/cosmos-sdk/client"

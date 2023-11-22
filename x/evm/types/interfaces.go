@@ -59,8 +59,8 @@ type BankKeeper interface {
 
 // StakingKeeper returns the historical headers kept in store.
 type StakingKeeper interface {
-	GetHistoricalInfo(ctx context.Context, height int64) (stakingtypes.HistoricalInfo, bool)
-	GetValidatorByConsAddr(ctx context.Context, consAddr sdk.ConsAddress) (validator stakingtypes.Validator, found bool)
+	GetHistoricalInfo(ctx context.Context, height int64) (stakingtypes.HistoricalInfo, error)
+	GetValidatorByConsAddr(ctx context.Context, consAddr sdk.ConsAddress) (validator stakingtypes.Validator, err error)
 }
 
 // FeeMarketKeeper

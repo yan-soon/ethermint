@@ -1,7 +1,6 @@
 package app
 
 import (
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -22,7 +21,7 @@ func TestEthermintAppExport(t *testing.T) {
 
 	// Making a new app object with the db, so that initchain hasn't been called
 	app2 := NewEthermintApp(
-		log.NewTMLogger(log.NewSyncWriter(os.Stdout)),
+		log.NewNopLogger(),
 		db,
 		nil,
 		true,

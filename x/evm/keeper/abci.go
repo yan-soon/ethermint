@@ -32,7 +32,7 @@ func (k *Keeper) BeginBlock() {
 // EndBlock also retrieves the bloom filter value from the transient store and commits it to the
 // KVStore. The EVM end block logic doesn't update the validator set, thus it returns
 // an empty slice.
-func (k *Keeper) EndBlock(ctx sdk.Context, _ abci.RequestFinalizeBlock) []abci.ValidatorUpdate {
+func (k *Keeper) EndBlock(ctx sdk.Context) []abci.ValidatorUpdate {
 	// Gas costs are handled within msg handler so costs should be ignored
 	infCtx := ctx.WithGasMeter(storetypes.NewInfiniteGasMeter())
 
