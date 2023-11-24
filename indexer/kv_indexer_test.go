@@ -4,7 +4,6 @@ import (
 	"math/big"
 	"testing"
 
-	simappparams "cosmossdk.io/simapp/params"
 	abci "github.com/cometbft/cometbft/abci/types"
 	"github.com/cometbft/cometbft/libs/log"
 	tmtypes "github.com/cometbft/cometbft/types"
@@ -184,6 +183,6 @@ func TestKVIndexer(t *testing.T) {
 }
 
 // MakeEncodingConfig creates the EncodingConfig
-func MakeEncodingConfig() simappparams.EncodingConfig {
+func MakeEncodingConfig() app.EncodingConfig {
 	return evmenc.MakeConfig(app.ModuleBasics)
 }

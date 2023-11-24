@@ -49,7 +49,6 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 
-	simappparams "cosmossdk.io/simapp/params"
 	rosettaCmd "cosmossdk.io/tools/rosetta/cmd"
 	"github.com/evmos/ethermint/app"
 	ethermintclient "github.com/evmos/ethermint/client"
@@ -67,7 +66,7 @@ const EnvPrefix = "ETHERMINT"
 
 // NewRootCmd creates a new root command for simd. It is called once in the
 // main function.
-func NewRootCmd() (*cobra.Command, simappparams.EncodingConfig) {
+func NewRootCmd() (*cobra.Command, app.EncodingConfig) {
 	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	initClientCtx := client.Context{}.
 		WithCodec(encodingConfig.Codec).
@@ -207,7 +206,7 @@ func txCommand() *cobra.Command {
 }
 
 type appCreator struct {
-	encCfg simappparams.EncodingConfig
+	encCfg app.EncodingConfig
 }
 
 // newApp is an appCreator

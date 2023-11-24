@@ -19,7 +19,6 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"cosmossdk.io/simapp"
 	storetypes "cosmossdk.io/store/types"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -31,7 +30,7 @@ import (
 )
 
 // NewDefaultGenesisState generates the default state for the application.
-func NewDefaultGenesisState() simapp.GenesisState {
+func NewDefaultGenesisState() GenesisState {
 	encCfg := encoding.MakeConfig(ModuleBasics)
 	return ModuleBasics.DefaultGenesis(encCfg.Codec)
 }
