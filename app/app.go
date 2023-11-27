@@ -114,6 +114,7 @@ import (
 	_ "github.com/evmos/ethermint/client/docs/statik"
 
 	"github.com/evmos/ethermint/app/ante"
+	appparams "github.com/evmos/ethermint/app/params"
 	"github.com/evmos/ethermint/ethereum/eip712"
 	srvflags "github.com/evmos/ethermint/server/flags"
 	ethermint "github.com/evmos/ethermint/types"
@@ -258,7 +259,7 @@ func NewEthermintApp(
 	skipUpgradeHeights map[int64]bool,
 	homePath string,
 	invCheckPeriod uint,
-	encodingConfig EncodingConfig,
+	encodingConfig appparams.EncodingConfig,
 	appOpts servertypes.AppOptions,
 	baseAppOptions ...func(*baseapp.BaseApp),
 ) *EthermintApp {
