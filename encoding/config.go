@@ -20,18 +20,18 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
-	"github.com/evmos/ethermint/app"
+	appparams "github.com/evmos/ethermint/app/params"
 
 	enccodec "github.com/evmos/ethermint/encoding/codec"
 )
 
 // MakeConfig creates an EncodingConfig for testing
-func MakeConfig(mb module.BasicManager) app.EncodingConfig {
+func MakeConfig(mb module.BasicManager) appparams.EncodingConfig {
 	cdc := amino.NewLegacyAmino()
 	interfaceRegistry := types.NewInterfaceRegistry()
 	codec := amino.NewProtoCodec(interfaceRegistry)
 
-	encodingConfig := app.EncodingConfig{
+	encodingConfig := appparams.EncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
 		Codec:             codec,
 		TxConfig:          tx.NewTxConfig(codec, tx.DefaultSignModes),

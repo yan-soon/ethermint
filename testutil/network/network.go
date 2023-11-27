@@ -71,6 +71,7 @@ import (
 	testnetwork "github.com/cosmos/cosmos-sdk/testutil/network"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/evmos/ethermint/app"
+	appparams "github.com/evmos/ethermint/app/params"
 )
 
 // network lock to only allow one test network at a time
@@ -81,7 +82,7 @@ var lock = new(sync.Mutex)
 type AppConstructor = func(val Validator) servertypes.Application
 
 // NewAppConstructor returns a new simapp AppConstructor
-func NewAppConstructor(encodingCfg app.EncodingConfig) AppConstructor {
+func NewAppConstructor(encodingCfg appparams.EncodingConfig) AppConstructor {
 	return func(val Validator) servertypes.Application {
 		return app.NewEthermintApp(
 			val.Ctx.Logger, dbm.NewMemDB(), nil, true, make(map[int64]bool), val.Ctx.Config.RootDir, 0,

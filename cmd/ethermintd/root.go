@@ -51,6 +51,7 @@ import (
 
 	rosettaCmd "cosmossdk.io/tools/rosetta/cmd"
 	"github.com/evmos/ethermint/app"
+	appparams "github.com/evmos/ethermint/app/params"
 	ethermintclient "github.com/evmos/ethermint/client"
 	"github.com/evmos/ethermint/client/debug"
 	"github.com/evmos/ethermint/crypto/hd"
@@ -66,7 +67,7 @@ const EnvPrefix = "ETHERMINT"
 
 // NewRootCmd creates a new root command for simd. It is called once in the
 // main function.
-func NewRootCmd() (*cobra.Command, app.EncodingConfig) {
+func NewRootCmd() (*cobra.Command, appparams.EncodingConfig) {
 	encodingConfig := encoding.MakeConfig(app.ModuleBasics)
 	initClientCtx := client.Context{}.
 		WithCodec(encodingConfig.Codec).
@@ -206,7 +207,7 @@ func txCommand() *cobra.Command {
 }
 
 type appCreator struct {
-	encCfg app.EncodingConfig
+	encCfg appparams.EncodingConfig
 }
 
 // newApp is an appCreator

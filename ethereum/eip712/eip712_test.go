@@ -23,6 +23,7 @@ import (
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/evmos/ethermint/app"
+	appparams "github.com/evmos/ethermint/app/params"
 	"github.com/evmos/ethermint/cmd/config"
 	"github.com/evmos/ethermint/encoding"
 	"github.com/evmos/ethermint/testutil"
@@ -45,7 +46,7 @@ const (
 type EIP712TestSuite struct {
 	suite.Suite
 
-	config                   app.EncodingConfig
+	config                   appparams.EncodingConfig
 	clientCtx                client.Context
 	useLegacyEIP712TypedData bool
 	denom                    string
