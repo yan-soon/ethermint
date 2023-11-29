@@ -230,7 +230,7 @@ require (
 replace (
 	// use cosmos keyring
 	github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
-	github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.0.0-20231129104340-ca3f1cbec091
+	github.com/cosmos/cosmos-sdk => github.com/Switcheo/cosmos-sdk v0.0.0-20231129155517-f230b6fd65ca
 
 	// Fix upstream GHSA-h395-qcrw-5vmq vulnerability.
 	// TODO Remove it: https://github.com/cosmos/cosmos-sdk/issues/10409
