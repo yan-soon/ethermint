@@ -49,7 +49,6 @@ import (
 	genutilcli "github.com/cosmos/cosmos-sdk/x/genutil/client/cli"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 
-	rosettaCmd "cosmossdk.io/tools/rosetta/cmd"
 	"github.com/evmos/ethermint/app"
 	appparams "github.com/evmos/ethermint/app/params"
 	ethermintclient "github.com/evmos/ethermint/client"
@@ -147,9 +146,6 @@ func NewRootCmd() (*cobra.Command, appparams.EncodingConfig) {
 	if err != nil {
 		panic(err)
 	}
-
-	// add rosetta
-	rootCmd.AddCommand(rosettaCmd.RosettaCommand(encodingConfig.InterfaceRegistry, encodingConfig.Codec))
 
 	return rootCmd, encodingConfig
 }
