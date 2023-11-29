@@ -223,7 +223,7 @@ func (msg *MsgEthereumTx) GetMsgs() []sdk.Msg {
 }
 
 func (msg *MsgEthereumTx) GetMsgsV2() ([]protov2.Message, error) {
-	return []protov2.Message{}, nil
+	return nil, nil
 }
 
 // GetSigners returns the expected signers for an Ethereum transaction message.
