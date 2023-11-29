@@ -32,14 +32,13 @@ import (
 
 	"cosmossdk.io/log"
 	sdkmath "cosmossdk.io/math"
-	tmcfg "github.com/cometbft/cometbft/config"
-	tmflags "github.com/cometbft/cometbft/libs/cli/flags"
 	tmrand "github.com/cometbft/cometbft/libs/rand"
 	"github.com/cometbft/cometbft/node"
 	tmclient "github.com/cometbft/cometbft/rpc/client"
 	dbm "github.com/cosmos/cosmos-db"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
+	"github.com/rs/zerolog"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 
@@ -68,6 +67,7 @@ import (
 	ethermint "github.com/evmos/ethermint/types"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
 
+	"github.com/cosmos/cosmos-sdk/runtime"
 	testnetwork "github.com/cosmos/cosmos-sdk/testutil/network"
 	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	"github.com/evmos/ethermint/app"
@@ -230,7 +230,7 @@ func NewCLILogger(cmd *cobra.Command) CLILogger {
 }
 
 // New creates a new Network for integration tests or in-process testnets run via the CLI
-func New(l Logger, baseDir string, cfg Config) (*Network, error) {
+func New(l Logger, baseDir string, cfg Config, valAddrCodec runtime.ValidatorAddressCodec) (*Network, error) {
 	// only one caller/test can create and use a network at a time
 	l.Log("acquiring test network lock")
 	lock.Lock()
@@ -319,12 +319,6 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 				appCfg.GRPC.Address = fmt.Sprintf("0.0.0.0:%s", grpcPort)
 			}
 			appCfg.GRPC.Enable = true
-
-			_, grpcWebPort, _, err := testnetwork.FreeTCPAddr()
-			if err != nil {
-				return nil, err
-			}
-			appCfg.GRPCWeb.Address = fmt.Sprintf("0.0.0.0:%s", grpcWebPort)
 			appCfg.GRPCWeb.Enable = true
 
 			if cfg.JSONRPCAddress != "" {
@@ -342,8 +336,8 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 
 		logger := log.NewNopLogger()
 		if cfg.EnableTMLogging {
-			logger = log.NewTMLogger(log.NewSyncWriter(os.Stdout))
-			logger, _ = tmflags.ParseLogLevel("info", logger, tmcfg.DefaultLogLevel)
+			option := log.LevelOption(zerolog.InfoLevel)
+			logger = log.NewLogger(os.Stdout, option)
 		}
 
 		ctx.Logger = logger
@@ -474,7 +468,7 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 			WithKeybase(kb).
 			WithTxConfig(cfg.TxConfig)
 
-		if err := tx.Sign(txFactory, nodeDirName, txBuilder, true); err != nil {
+		if err := tx.Sign(context.Background(), txFactory, nodeDirName, txBuilder, true); err != nil {
 			return nil, err
 		}
 
@@ -529,7 +523,7 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 	if err != nil {
 		return nil, err
 	}
-	err = collectGenFiles(cfg, network.Validators, network.BaseDir)
+	err = collectGenFiles(cfg, network.Validators, network.BaseDir, valAddrCodec)
 	if err != nil {
 		return nil, err
 	}
@@ -543,10 +537,6 @@ func New(l Logger, baseDir string, cfg Config) (*Network, error) {
 	}
 
 	l.Log("started test network")
-
-	// Ensure we cleanup incase any test was abruptly halted (e.g. SIGINT) as any
-	// defer in a test would not be called.
-	server.TrapSignal(network.Cleanup)
 
 	return network, nil
 }

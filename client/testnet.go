@@ -193,6 +193,11 @@ Example:
 	evmosd testnet --v 4 --output-dir ./.testnets
 	`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
+			clientCtx, err := client.GetClientQueryContext(cmd)
+			if err != nil {
+				return err
+			}
+
 			args := startArgs{}
 			args.outputDir, _ = cmd.Flags().GetString(flagOutputDir)
 			args.chainID, _ = cmd.Flags().GetString(flags.FlagChainID)
@@ -206,7 +211,7 @@ Example:
 			args.jsonrpcAddress, _ = cmd.Flags().GetString(srvflags.JSONRPCAddress)
 			args.printMnemonic, _ = cmd.Flags().GetBool(flagPrintMnemonic)
 
-			return startTestnet(cmd, args)
+			return startTestnet(cmd, args, clientCtx.TxConfig.SigningContext().ValidatorAddressCodec())
 		},
 	}
 
@@ -555,7 +560,7 @@ func calculateIP(ip string, i int) (string, error) {
 }
 
 // startTestnet starts an in-process testnet
-func startTestnet(cmd *cobra.Command, args startArgs) error {
+func startTestnet(cmd *cobra.Command, args startArgs, valAddrCodec runtime.ValidatorAddressCodec) error {
 	networkConfig := network.DefaultConfig()
 
 	// Default networkConfig.ChainID is random, and we should only override it if chainID provided
@@ -581,7 +586,7 @@ func startTestnet(cmd *cobra.Command, args startArgs) error {
 			networkConfig.ChainID, baseDir)
 	}
 
-	testnet, err := network.New(networkLogger, baseDir, networkConfig)
+	testnet, err := network.New(networkLogger, baseDir, networkConfig, valAddrCodec)
 	if err != nil {
 		return err
 	}
