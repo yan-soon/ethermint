@@ -40,6 +40,7 @@ import (
 	"github.com/ethereum/go-ethereum/core"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 	protov2 "google.golang.org/protobuf/proto"
+	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
 var (
@@ -222,8 +223,12 @@ func (msg *MsgEthereumTx) GetMsgs() []sdk.Msg {
 	return []sdk.Msg{msg}
 }
 
+func (msg *MsgEthereumTx) ProtoReflect() protoreflect.Message {
+	return nil
+}
+
 func (msg *MsgEthereumTx) GetMsgsV2() ([]protov2.Message, error) {
-	return nil, nil
+	return []protov2.Message{msg}, nil
 }
 
 // GetSigners returns the expected signers for an Ethereum transaction message.
