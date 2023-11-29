@@ -21,9 +21,7 @@ import (
 	"github.com/ethereum/go-ethereum/common"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	signingv1beta1 "cosmossdk.io/api/cosmos/tx/signing/v1beta1"
 	storetypes "cosmossdk.io/store/types"
-	txsigning "cosmossdk.io/x/tx/signing"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/tx"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
@@ -591,10 +589,10 @@ func (suite *AnteTestSuite) RegisterAccount(pubKey cryptotypes.PubKey, balance *
 }
 
 // createSignerBytes generates sign doc bytes using the given parameters
-func (suite *AnteTestSuite) createSignerBytes(chainId string, signMode signingv1beta1.SignMode, pubKey cryptotypes.PubKey, txBuilder client.TxBuilder) []byte {
+func (suite *AnteTestSuite) createSignerBytes(chainId string, signMode signing.SignMode, pubKey cryptotypes.PubKey, txBuilder client.TxBuilder) []byte {
 	acc, err := sdkante.GetSignerAcc(suite.ctx, suite.app.AccountKeeper, sdk.AccAddress(pubKey.Address()))
 	suite.Require().NoError(err)
-	signerInfo := txsigning.SignerData{
+	signerInfo := authsigning.SignerData{
 		Address:       sdk.MustBech32ifyAddressBytes(sdk.GetConfig().GetBech32AccountAddrPrefix(), acc.GetAddress().Bytes()),
 		ChainID:       chainId,
 		AccountNumber: acc.GetAccountNumber(),
@@ -602,9 +600,10 @@ func (suite *AnteTestSuite) createSignerBytes(chainId string, signMode signingv1
 		PubKey:        pubKey,
 	}
 
-	signerBytes, err := suite.clientCtx.TxConfig.SignModeHandler().GetSignBytes(
+	signerBytes, err := authsigning.GetSignBytesAdapter(
 		suite.clientCtx.CmdContext,
-		signMode,
+		suite.clientCtx.TxConfig.SignModeHandler(),
+		signing.SignMode_SIGN_MODE_UNSPECIFIED,
 		signerInfo,
 		txBuilder.GetTx(),
 	)

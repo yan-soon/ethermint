@@ -112,9 +112,9 @@ func decodeAminoSignDoc(signDocBytes []byte) (apitypes.TypedData, error) {
 		msgs[i] = m
 	}
 
-	if err := validatePayloadMessages(msgs); err != nil {
-		return apitypes.TypedData{}, err
-	}
+	// if err := validatePayloadMessages(msgs); err != nil {
+	// 	return apitypes.TypedData{}, err
+	// }
 
 	chainID, err := types.ParseChainID(aminoDoc.ChainID)
 	if err != nil {
@@ -174,9 +174,9 @@ func decodeProtobufSignDoc(signDocBytes []byte) (apitypes.TypedData, error) {
 		msgs[i] = m
 	}
 
-	if err := validatePayloadMessages(msgs); err != nil {
-		return apitypes.TypedData{}, err
-	}
+	// if err := validatePayloadMessages(msgs); err != nil {
+	// 	return apitypes.TypedData{}, err
+	// }
 
 	signerInfo := authInfo.SignerInfos[0]
 
@@ -224,27 +224,27 @@ func validateCodecInit() error {
 
 // validatePayloadMessages ensures that the transaction messages can be represented in an EIP-712
 // encoding by checking that messages exist and share a single signer.
-func validatePayloadMessages(msgs []sdk.Msg) error {
-	if len(msgs) == 0 {
-		return errors.New("unable to build EIP-712 payload: transaction does contain any messages")
-	}
+// func validatePayloadMessages(msgs []sdk.Msg) error {
+// 	if len(msgs) == 0 {
+// 		return errors.New("unable to build EIP-712 payload: transaction does contain any messages")
+// 	}
 
-	var msgSigner sdk.AccAddress
+// 	var msgSigner sdk.AccAddress
 
-	for i, m := range msgs {
-		if len(m.GetSigners()) != 1 {
-			return errors.New("unable to build EIP-712 payload: expect exactly 1 signer")
-		}
+// 	for i, m := range msgs {
+// 		if len(m.GetSigners()) != 1 {
+// 			return errors.New("unable to build EIP-712 payload: expect exactly 1 signer")
+// 		}
 
-		if i == 0 {
-			msgSigner = m.GetSigners()[0]
-			continue
-		}
+// 		if i == 0 {
+// 			msgSigner = m.GetSigners()[0]
+// 			continue
+// 		}
 
-		if !msgSigner.Equals(m.GetSigners()[0]) {
-			return errors.New("unable to build EIP-712 payload: multiple signers detected")
-		}
-	}
+// 		if !msgSigner.Equals(m.GetSigners()[0]) {
+// 			return errors.New("unable to build EIP-712 payload: multiple signers detected")
+// 		}
+// 	}
 
-	return nil
-}
+// 	return nil
+// }

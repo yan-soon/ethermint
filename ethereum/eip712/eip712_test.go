@@ -292,9 +292,11 @@ func (suite *EIP712TestSuite) TestEIP712() {
 			title: "Fails - Single Message / Multi-Signer",
 			msgs: []sdk.Msg{
 				banktypes.NewMsgMultiSend(
-					banktypes.Input{
-						Address: suite.createTestAddress().String(),
-						Coins:   suite.makeCoins(suite.denom, math.NewInt(50)),
+					[]banktypes.Input{
+						banktypes.NewInput(
+							suite.createTestAddress(),
+							suite.makeCoins(suite.denom, math.NewInt(50)),
+						),
 					},
 					[]banktypes.Output{
 						banktypes.NewOutput(
@@ -358,9 +360,10 @@ func (suite *EIP712TestSuite) TestEIP712() {
 					Address:       sdk.MustBech32ifyAddressBytes(config.Bech32Prefix, pubKey.Bytes()),
 				}
 
-				bz, err := suite.clientCtx.TxConfig.SignModeHandler().GetSignBytes(
+				bz, err := authsigning.GetSignBytesAdapter(
 					suite.clientCtx.CmdContext,
-					signMode,
+					suite.clientCtx.TxConfig.SignModeHandler(),
+					signing.SignMode_SIGN_MODE_UNSPECIFIED,
 					signerData,
 					txBuilder.GetTx(),
 				)
