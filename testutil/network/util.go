@@ -16,6 +16,7 @@
 package network
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"path/filepath"
@@ -111,7 +112,7 @@ func startInProcess(cfg Config, val *Validator) error {
 			return err
 		}
 
-		err = servergrpc.StartGRPCServer(val.ClientCtx.CmdContext, logger, val.AppConfig.GRPC, grpcSrv)
+		err = servergrpc.StartGRPCServer(context.Background(), logger, val.AppConfig.GRPC, grpcSrv)
 		if err != nil {
 			return err
 		}
@@ -126,7 +127,7 @@ func startInProcess(cfg Config, val *Validator) error {
 		errCh := make(chan error)
 
 		go func() {
-			if err := apiSrv.Start(val.ClientCtx.CmdContext, val.AppConfig.Config); err != nil {
+			if err := apiSrv.Start(context.Background(), val.AppConfig.Config); err != nil {
 				errCh <- err
 			}
 		}()

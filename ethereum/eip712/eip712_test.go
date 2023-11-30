@@ -2,6 +2,7 @@ package eip712_test
 
 import (
 	"bytes"
+	"context"
 	"fmt"
 	"testing"
 
@@ -361,7 +362,7 @@ func (suite *EIP712TestSuite) TestEIP712() {
 				}
 
 				bz, err := authsigning.GetSignBytesAdapter(
-					suite.clientCtx.CmdContext,
+					context.Background(),
 					suite.clientCtx.TxConfig.SignModeHandler(),
 					signing.SignMode_SIGN_MODE_UNSPECIFIED,
 					signerData,
