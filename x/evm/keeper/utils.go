@@ -42,8 +42,12 @@ func (k Keeper) GetCoinbaseAddress(ctx sdk.Context, proposerAddress sdk.ConsAddr
 			proposerAddress.String(),
 		)
 	}
+	valBz, err := k.stakingKeeper.ValidatorAddressCodec().StringToBytes((validator.GetOperator()))
+	if err != nil {
+		return common.Address{}, err
+	}
 
-	coinbase := common.BytesToAddress([]byte(validator.GetOperator()))
+	coinbase := common.BytesToAddress(valBz)
 	return coinbase, nil
 }
 

@@ -104,7 +104,10 @@ func (suite *KeeperTestSuite) SetupApp(checkTx bool) {
 	require.NoError(t, err)
 	appStakingKeeper := suite.app.StakingKeeper
 	validator = stakingkeeper.TestingUpdateValidator(&appStakingKeeper, suite.ctx, validator, true)
-	err = suite.app.StakingKeeper.Hooks().AfterValidatorCreated(suite.ctx, []byte(validator.GetOperator()))
+	valBz, err := suite.app.StakingKeeper.ValidatorAddressCodec().StringToBytes((validator.GetOperator()))
+	require.NoError(t, err)
+
+	err = suite.app.StakingKeeper.Hooks().AfterValidatorCreated(suite.ctx, valBz)
 	require.NoError(t, err)
 
 	err = suite.app.StakingKeeper.SetValidatorByConsAddr(suite.ctx, validator)
