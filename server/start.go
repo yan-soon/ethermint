@@ -61,6 +61,9 @@ import (
 	servergrpc "github.com/cosmos/cosmos-sdk/server/grpc"
 	"github.com/cosmos/cosmos-sdk/server/types"
 
+	cmtcfg "github.com/cometbft/cometbft/config"
+	cmttypes "github.com/cometbft/cometbft/types"
+	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	"github.com/evmos/ethermint/indexer"
 	ethdebug "github.com/evmos/ethermint/rpc/namespaces/ethereum/debug"
 	"github.com/evmos/ethermint/server/config"
@@ -365,7 +368,7 @@ func startInProcess(ctx *server.Context, svrCfg serverconfig.Config, clientCtx c
 		return err
 	}
 
-	genDocProvider := node.DefaultGenesisDocProviderFunc(cfg)
+	genDocProvider := getGenDocProvider(cfg)
 
 	var (
 		tmNode   *node.Node
@@ -657,4 +660,16 @@ func getAndValidateConfig(svrCtx *server.Context) (serverconfig.Config, error) {
 		return config, err
 	}
 	return config, nil
+}
+
+// returns a function which returns the genesis doc from the genesis file.
+func getGenDocProvider(cfg *cmtcfg.Config) func() (*cmttypes.GenesisDoc, error) {
+	return func() (*cmttypes.GenesisDoc, error) {
+		appGenesis, err := genutiltypes.AppGenesisFromFile(cfg.GenesisFile())
+		if err != nil {
+			return nil, err
+		}
+
+		return appGenesis.ToGenesisDoc()
+	}
 }
