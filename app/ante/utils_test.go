@@ -264,6 +264,7 @@ func (suite *AnteTestSuite) CreateTestTxBuilder(
 			ChainID:       suite.ctx.ChainID(),
 			AccountNumber: accNum,
 			Sequence:      txData.GetNonce(),
+			PubKey:        priv.PubKey(),
 		}
 		sigV2, err = tx.SignWithPrivKey(
 			suite.ctx,

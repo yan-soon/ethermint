@@ -124,6 +124,7 @@ func signCosmosTx(
 		ChainID:       args.ChainID,
 		AccountNumber: accNumber,
 		Sequence:      seq,
+		PubKey:        args.Priv.PubKey(),
 	}
 	sigV2, err = tx.SignWithPrivKey(
 		ctx.Context(),

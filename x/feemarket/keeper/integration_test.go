@@ -679,6 +679,7 @@ func prepareCosmosTx(priv *ethsecp256k1.PrivKey, gasPrice *sdkmath.Int, msgs ...
 		ChainID:       s.ctx.ChainID(),
 		AccountNumber: accNumber,
 		Sequence:      seq,
+		PubKey:        priv.PubKey(),
 	}
 	sigV2, err = tx.SignWithPrivKey(
 		s.ctx,
