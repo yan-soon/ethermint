@@ -26,16 +26,6 @@ import (
 	proto "github.com/cosmos/gogoproto/proto"
 )
 
-var (
-	amino = codec.NewLegacyAmino()
-	// ModuleCdc references the global evm module codec. Note, the codec should
-	// ONLY be used in certain instances of tests and for JSON encoding.
-	ModuleCdc = codec.NewProtoCodec(codectypes.NewInterfaceRegistry())
-
-	// AminoCdc is a amino codec created to support amino JSON compatible msgs.
-	AminoCdc = codec.NewAminoCodec(amino)
-)
-
 type (
 	ExtensionOptionsEthereumTxI interface{}
 )
@@ -44,12 +34,6 @@ const (
 	// Amino names
 	updateParamsName = "ethermint/MsgUpdateParams"
 )
-
-// NOTE: This is required for the GetSignBytes function
-func init() {
-	RegisterLegacyAminoCodec(amino)
-	amino.Seal()
-}
 
 // RegisterInterfaces registers the client interfaces to protobuf Any.
 func RegisterInterfaces(registry codectypes.InterfaceRegistry) {
