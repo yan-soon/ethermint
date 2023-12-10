@@ -10,6 +10,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/cosmos/gogoproto/proto"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
+	googleproto "google.golang.org/protobuf/proto"
 	"google.golang.org/protobuf/reflect/protoreflect"
 )
 
@@ -35,7 +36,10 @@ func MakeEncodingConfig() EncodingConfig {
 			},
 		},
 	}
-	var test signing.GetSignersFunc
+	test := func(m googleproto.Message) ([][]byte, error) {
+		signers := [][]byte{[]byte("foo")}
+		return signers, nil
+	}
 
 	options.SigningOptions.DefineCustomGetSigners(
 		protoreflect.FullName(sdk.MsgTypeURL((*evmtypes.MsgEthereumTx)(nil))),
