@@ -7,7 +7,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/codec/address"
 	"github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/module"
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 	"github.com/cosmos/gogoproto/proto"
 	evmtypes "github.com/evmos/ethermint/x/evm/types"
@@ -23,7 +22,7 @@ type EncodingConfig struct {
 	Amino             *codec.LegacyAmino
 }
 
-func MakeEncodingConfig(modules ...module.AppModuleBasic) EncodingConfig {
+func MakeEncodingConfig() EncodingConfig {
 	amino := codec.NewLegacyAmino()
 	options := types.InterfaceRegistryOptions{
 		ProtoFiles: proto.HybridResolver,
@@ -42,20 +41,7 @@ func MakeEncodingConfig(modules ...module.AppModuleBasic) EncodingConfig {
 		protoreflect.FullName(sdk.MsgTypeURL((*evmtypes.MsgEthereumTx)(nil))),
 		test,
 	)
-	interfaceRegistry, _ := types.NewInterfaceRegistryWithOptions(
-		// todo: should panic here?
-		types.InterfaceRegistryOptions{
-			ProtoFiles: proto.HybridResolver,
-			SigningOptions: signing.Options{
-				AddressCodec: address.Bech32Codec{
-					Bech32Prefix: "tswth",
-				},
-				ValidatorAddressCodec: address.Bech32Codec{
-					Bech32Prefix: "tswthvaloper",
-				},
-			},
-		},
-	)
+	interfaceRegistry, _ := types.NewInterfaceRegistryWithOptions(options)
 	codec := codec.NewProtoCodec(interfaceRegistry)
 	txCfg := tx.NewTxConfig(codec, tx.DefaultSignModes)
 
