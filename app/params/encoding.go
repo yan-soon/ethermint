@@ -29,10 +29,10 @@ func MakeEncodingConfig() EncodingConfig {
 		ProtoFiles: proto.HybridResolver,
 		SigningOptions: signing.Options{
 			AddressCodec: address.Bech32Codec{
-				Bech32Prefix: "tswth",
+				Bech32Prefix: sdk.GetConfig().GetBech32AccountAddrPrefix(),
 			},
 			ValidatorAddressCodec: address.Bech32Codec{
-				Bech32Prefix: "tswthvaloper",
+				Bech32Prefix: sdk.GetConfig().GetBech32ValidatorAddrPrefix(),
 			},
 		},
 	}
