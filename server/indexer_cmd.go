@@ -25,7 +25,6 @@ import (
 	tmstore "github.com/cometbft/cometbft/store"
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/server"
-	servercmtlog "github.com/cosmos/cosmos-sdk/server/log"
 	"github.com/evmos/ethermint/indexer"
 )
 
@@ -61,8 +60,7 @@ func NewIndexTxCmd() *cobra.Command {
 				logger.Error("failed to open evm indexer DB", "error", err.Error())
 				return err
 			}
-			idxLogger := servercmtlog.CometLoggerWrapper{Logger: logger.With("module", "abci-server")}
-			idxer := indexer.NewKVIndexer(idxDB, idxLogger, clientCtx)
+			idxer := indexer.NewKVIndexer(idxDB, logger.With("module", "evmindex"), clientCtx)
 
 			// open local tendermint db, because the local rpc won't be available.
 			tmdb, err := config.DefaultDBProvider(&config.DBContext{ID: "blockstore", Config: cfg})
