@@ -19,12 +19,12 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/evmos/ethermint/crypto/ethsecp256k1"
 
+	sdktestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	txtypes "github.com/cosmos/cosmos-sdk/types/tx"
 	"github.com/cosmos/cosmos-sdk/types/tx/signing"
 	authsigning "github.com/cosmos/cosmos-sdk/x/auth/signing"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/evmos/ethermint/app"
-	appparams "github.com/evmos/ethermint/app/params"
 	"github.com/evmos/ethermint/cmd/config"
 	"github.com/evmos/ethermint/encoding"
 	"github.com/evmos/ethermint/testutil"
@@ -47,7 +47,7 @@ const (
 type EIP712TestSuite struct {
 	suite.Suite
 
-	config                   appparams.EncodingConfig
+	config                   sdktestutil.TestEncodingConfig
 	clientCtx                client.Context
 	useLegacyEIP712TypedData bool
 	denom                    string
