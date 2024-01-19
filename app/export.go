@@ -104,7 +104,8 @@ func (app *EthermintApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAd
 
 	// withdraw all validator commission
 	app.StakingKeeper.IterateValidators(ctx, func(_ int64, val stakingtypes.ValidatorI) (stop bool) {
-		valBz, err := app.StakingKeeper.ValidatorAddressCodec().StringToBytes((val.GetOperator()))
+
+		valBz, err := app.EvmKeeper.GetValidatorAddrBz((val.GetOperator()))
 		if err != nil {
 			return true
 		}
@@ -144,7 +145,7 @@ func (app *EthermintApp) prepForZeroHeightGenesis(ctx sdk.Context, jailAllowedAd
 	// reinitialize all validators
 	app.StakingKeeper.IterateValidators(ctx, func(_ int64, val stakingtypes.ValidatorI) (stop bool) {
 		// donate any unwithdrawn outstanding reward fraction tokens to the community pool
-		valBz, err := app.StakingKeeper.ValidatorAddressCodec().StringToBytes((val.GetOperator()))
+		valBz, err := app.EvmKeeper.GetValidatorAddrBz((val.GetOperator()))
 		if err != nil {
 			return true
 		}
