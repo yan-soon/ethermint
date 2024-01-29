@@ -18,33 +18,14 @@ import (
 //  4. Commit
 func Commit(ctx sdk.Context, app *app.EthermintApp, t time.Duration, vs *tmtypes.ValidatorSet) (sdk.Context, error) {
 	header := ctx.BlockHeader()
-
-	if vs != nil {
-		res, err := app.EndBlock(&abci.RequestFinalizeBlock{Height: header.Height})
-		if err != nil {
-			return ctx, err
-		}
-
-		nextVals, err := applyValSetChanges(vs, res.ValidatorUpdates)
-		if err != nil {
-			return ctx, err
-		}
-		header.ValidatorsHash = vs.Hash()
-		header.NextValidatorsHash = nextVals.Hash()
-	} else {
-		app.EndBlocker(ctx)
-	}
-
-	_, err := app.Commit()
-	if err != nil {
-		return ctx, err
-	}
+	app.WriteFinalizeBlockState()
+	_, _ = app.Commit()
 
 	header.Height++
 	header.Time = header.Time.Add(t)
 	header.AppHash = app.LastCommitID().Hash
 
-	app.BeginBlock(&abci.RequestFinalizeBlock{
+	app.FinalizeBlock(&abci.RequestFinalizeBlock{
 		Height:             header.Height,
 		Time:               header.Time,
 		ProposerAddress:    header.ProposerAddress,
@@ -52,7 +33,7 @@ func Commit(ctx sdk.Context, app *app.EthermintApp, t time.Duration, vs *tmtypes
 		Hash:               header.AppHash,
 	})
 
-	return ctx.WithBlockHeader(header), nil
+	return app.BaseApp.NewContextLegacy(false, header), nil
 }
 
 // applyValSetChanges takes in tmtypes.ValidatorSet and []abci.ValidatorUpdate and will return a new tmtypes.ValidatorSet which has the

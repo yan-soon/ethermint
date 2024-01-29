@@ -293,12 +293,10 @@ func (suite *EIP712TestSuite) TestEIP712() {
 			title: "Fails - Single Message / Multi-Signer",
 			msgs: []sdk.Msg{
 				banktypes.NewMsgMultiSend(
-					[]banktypes.Input{
-						banktypes.NewInput(
-							suite.createTestAddress(),
-							suite.makeCoins(suite.denom, math.NewInt(50)),
-						),
-					},
+					banktypes.NewInput(
+						suite.createTestAddress(),
+						suite.makeCoins(suite.denom, math.NewInt(50)),
+					),
 					[]banktypes.Output{
 						banktypes.NewOutput(
 							suite.createTestAddress(),
