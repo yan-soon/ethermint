@@ -21,6 +21,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/gorilla/mux"
 	"github.com/rakyll/statik/fs"
@@ -479,6 +480,7 @@ func NewEthermintApp(
 		app.MsgServiceRouter(),
 		govConfig,
 		authAddr,
+		app.getWhitelistedPropMsgs(),
 	)
 
 	app.GovKeeper = *govKeeper.SetHooks(
@@ -914,4 +916,21 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(evmtypes.ModuleName).WithKeyTable(evmtypes.ParamKeyTable()) //nolint: staticcheck
 	paramsKeeper.Subspace(feemarkettypes.ModuleName).WithKeyTable(feemarkettypes.ParamKeyTable())
 	return paramsKeeper
+}
+
+func (app *EthermintApp) getWhitelistedPropMsgs() []string {
+	allMsgs := app.interfaceRegistry.ListImplementations(sdk.MsgInterfaceProtoName)
+	whitelistedMsgs := []string{
+		"/cosmos.distribution.v1beta1.MsgCommunityPoolSpend",
+		"/cosmos.upgrade.v1beta1.MsgSoftwareUpgrade",
+		"/cosmos.upgrade.v1beta1.MsgCancelUpgrade",
+	}
+
+	for _, msg := range allMsgs {
+		if strings.HasSuffix(msg, ".MsgUpdateParams") {
+			whitelistedMsgs = append(whitelistedMsgs, msg)
+		}
+	}
+
+	return whitelistedMsgs
 }
