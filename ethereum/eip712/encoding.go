@@ -112,7 +112,7 @@ func decodeAminoSignDoc(signDocBytes []byte) (apitypes.TypedData, error) {
 		msgs[i] = m
 	}
 
-	if err := validatePayloadMessages(msgs); err != nil {
+	if err := validatePayloadMessages(msgs, protoCodec); err != nil {
 		return apitypes.TypedData{}, err
 	}
 
@@ -224,7 +224,7 @@ func validateCodecInit() error {
 
 // validatePayloadMessages ensures that the transaction messages can be represented in an EIP-712
 // encoding by checking that messages exist and share a single signer.
-func validatePayloadMessages(msgs []sdk.Msg) error {
+func validatePayloadMessages(msgs []sdk.Msg, cdc codec.Codec) error {
 	if len(msgs) == 0 {
 		return errors.New("unable to build EIP-712 payload: transaction does contain any messages")
 	}
@@ -232,16 +232,23 @@ func validatePayloadMessages(msgs []sdk.Msg) error {
 	var msgSigner sdk.AccAddress
 
 	for i, m := range msgs {
-		if len(m.(sdk.LegacyMsg).GetSigners()) != 1 {
+
+		signers, _, err := cdc.GetMsgV1Signers(m)
+
+		if err != nil {
+			return errors.New(fmt.Sprintf("unable to get message signer for eip712 validation %#+v \n", m))
+		}
+
+		if len(signers) != 1 {
 			return errors.New("unable to build EIP-712 payload: expect exactly 1 signer")
 		}
 
 		if i == 0 {
-			msgSigner = m.(sdk.LegacyMsg).GetSigners()[0]
+			msgSigner = signers[0]
 			continue
 		}
 
-		if !msgSigner.Equals(m.(sdk.LegacyMsg).GetSigners()[0]) {
+		if !msgSigner.Equals(sdk.AccAddress(signers[0])) {
 			return errors.New("unable to build EIP-712 payload: multiple signers detected")
 		}
 	}
