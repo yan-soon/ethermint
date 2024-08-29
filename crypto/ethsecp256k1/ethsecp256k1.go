@@ -234,6 +234,7 @@ func (pubKey PubKey) VerifySignature(msg, sig []byte) bool {
 // to EIP-712 object bytes, then performing ECDSA verification on the hash. This is to support
 // signing a Cosmos payload using EIP-712.
 func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
+	logrus.Infof("DEBUG: getting eip712bytes")
 	eip712Bytes, typedData, err := eip712.GetEIP712BytesForMsg(msg)
 	if err != nil {
 		logrus.Errorf("Error while getting typedData and eip712Bytes from msg: \ntypedData: %#+v \n", typedData)
@@ -241,12 +242,14 @@ func (pubKey PubKey) verifySignatureAsEIP712(msg, sig []byte) bool {
 	}
 	typedDataJson, _ := json.Marshal(typedData)
 
+	logrus.Infof("DEBUG: trying ecdsa")
 	if pubKey.verifySignatureECDSA(eip712Bytes, sig) {
 		return true
 	}
 	logrus.Errorf("Unable to verify EIP-712 Signature: \ntypedData: %s \n", typedDataJson)
 
 	// Try verifying the signature using the legacy EIP-712 encoding
+	logrus.Infof("DEBUG: trying legacy eip712")
 	legacyEIP712Bytes, typedDataLegacy, err := eip712.LegacyGetEIP712BytesForMsg(msg)
 	if err != nil {
 		logrus.Errorf("Error while getting typedData and eip712Bytes from msg: \ntypedDataLegacy: %#+v \n", typedDataLegacy)
